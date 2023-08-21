@@ -578,26 +578,29 @@ async function endGame(ctx: Context, session: Session<never, never>, guildId: st
   const playerInfos = await ctx.database.get('bull_card_players', { guildId });
   const filteredPlayerInfos = playerInfos.filter(playerInfo => members.includes(playerInfo.userId));
   const winners = getWinners(filteredPlayerInfos);
+  const loserPlayerInfos = filteredPlayerInfos.filter(playerInfo => !winners.some(winner => winner.userId === playerInfo.userId));
+
   const loserNames: string[] = [];
+  const winningPoints = (members.length - winners.length) / winners.length;
 
   for (const winner of winners) {
     const rankInfo = (await ctx.database.get('bull_card_rank', { guildId, userId: winner.userId }))[0];
-    await ctx.database.set('bull_card_rank', { guildId, userId: winner.userId }, { score: rankInfo.score + (members.length - winners.length) / winners.length });
-    loserNames.push(winner.userId);
+    if (rankInfo) {
+      await ctx.database.set('bull_card_rank', { guildId, userId: winner.userId }, { score: rankInfo.score + winningPoints });
+      loserNames.push(winner.userId);
+    }
   }
-
-  const loserPlayerInfos = filteredPlayerInfos.filter(playerInfo => !winners.some(winner => winner.userId === playerInfo.userId));
 
   for (const loser of loserPlayerInfos) {
     const rankInfo = (await ctx.database.get('bull_card_rank', { guildId, userId: loser.userId }))[0];
-    await ctx.database.set('bull_card_rank', { guildId, userId: loser.userId }, { score: rankInfo.score - 1 });
-    loserNames.push(loser.userId);
+    if (rankInfo) {
+      await ctx.database.set('bull_card_rank', { guildId, userId: loser.userId }, { score: rankInfo.score - 1 });
+      loserNames.push(loser.userId);
+    }
   }
 
   const winnerNames = winners.map(winner => `【${h.at(winner.userId)}】`).join('\n');
   const loserNamesFormatted = loserNames.map(loser => `【${h.at(loser)}】`).join('\n');
-
-  const winningPoints = (members.length - winners.length) / winners.length;
 
   await session.sendQueued(`牛气冲天，斗牛结束！\n本局游戏的结果如下：\n${winnerNames}恭喜你们斗出了大牛，赢得了胜利！🎉\n获得积分【${winningPoints}】 点！👏\n\n${loserNamesFormatted}很遗憾，你们的牛不够大，输掉了比赛！😢\n扣除积分【1】点！😭`);
 
