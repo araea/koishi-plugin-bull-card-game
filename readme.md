@@ -57,7 +57,7 @@
 ## 🙏 致谢
 
 * [Koishi](https://koishi.chat/) - 机器人框架
-* [欢乐斗牛_百度百科 (baidu.com)](https://baike.baidu.com/item/%E6%AC%A2%E4%B9%90%E6%96%97%E7%89%9B/7961223)
+* [欢乐斗牛](https://baike.baidu.com/item/%E6%AC%A2%E4%B9%90%E6%96%97%E7%89%9B/7961223) - 百度百科游戏规则一览
 
 ## 📄 License
 

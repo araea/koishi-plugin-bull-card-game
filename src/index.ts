@@ -561,14 +561,14 @@ async function endGame(ctx: Context, session: Session<never, never>, guildId: st
   let winnerNames: string = ''
   let losers: Pick<BullCardPlayers, Keys<BullCardPlayers, any>>[]
   for (const winner of winners) {
-    const rankInfo = await ctx.database.get('bull_card_rank', { guildId, userId: winner.userId })[0]
+    const rankInfo = (await ctx.database.get('bull_card_rank', { guildId, userId: winner.userId }))[0]
     await ctx.database.set('bull_card_rank', { guildId, userId: winner.userId }, { score: rankInfo.score + (members.length - winners.length) / winners.length })
     winnerNames = `【${h.at(winner.userId)}】\n` + winnerNames
     losers = filteredPlayerInfos.filter(playerInfo => winner.userId !== playerInfo.userId)
   }
   let loserNames: string = ''
   for (const loser of losers) {
-    const rankInfo = await ctx.database.get('bull_card_rank', { guildId, userId: loser.userId })[0]
+    const rankInfo = (await ctx.database.get('bull_card_rank', { guildId, userId: loser.userId }))[0]
     await ctx.database.set('bull_card_rank', { guildId, userId: loser.userId }, { score: rankInfo.score - 1 })
     loserNames = `【${h.at(loser.userId)}】\n` + loserNames
   }
@@ -610,7 +610,7 @@ function getWinners(playerInfos: BullCardPlayers[]): BullCardPlayers[] {
       maxScore = score;
       winners = [player];
     } else if (score === maxScore) {
-      const { suit: winnerSuit, rank: winnerRank } = winners[0].maxCard;
+      const { suit: winnerSuit, rank: winnerRank } = winners[0]?.maxCard || {};
 
       if (rankWeight[playerRank] > rankWeight[winnerRank]) {
         winners = [player];
