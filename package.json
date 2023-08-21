@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-bull-card-game",
-  "description": "",
-  "version": "0.0.1",
+  "description": "斗牛纸牌游戏插件，让你和你的群友可以在群里一起玩斗牛，体验牛气冲天的乐趣！ 🐂",
+  "version": "0.0.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -9,11 +9,25 @@
     "dist"
   ],
   "license": "MIT",
+  "author": "Nawyjx <3373167460@qq.com>",
+  "homepage": "https://www.npmjs.com/package/koishi-plugin-bull-card-game?activeTab=readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/araea/koishi-plugin-bull-card-game.git"
+  },
   "scripts": {},
   "keywords": [
     "chatbot",
     "koishi",
-    "plugin"
+    "plugin",
+    "game",
+    "bullCard",
+    "bull",
+    "bet",
+    "斗牛",
+    "纸牌游戏",
+    "赌博",
+    "牛牛"
   ],
   "peerDependencies": {
     "koishi": "^4.14.1"
