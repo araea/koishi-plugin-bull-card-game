@@ -579,7 +579,7 @@ async function endGame(ctx: Context, session: Session<never, never>, guildId: st
   const filteredPlayerInfos = playerInfos.filter(playerInfo => members.includes(playerInfo.userId))
   const winners = getWinners(filteredPlayerInfos)
   let winnerNames: string = ''
-  let losers: Pick<BullCardPlayers, Keys<BullCardPlayers, any>>[]
+  let losers: BullCardPlayers[]
   for (const winner of winners) {
     const rankInfo = (await ctx.database.get('bull_card_rank', { guildId, userId: winner.userId }))[0]
     await ctx.database.set('bull_card_rank', { guildId, userId: winner.userId }, { score: rankInfo.score + (members.length - winners.length) / winners.length })
