@@ -587,7 +587,6 @@ async function endGame(ctx: Context, session: Session<never, never>, guildId: st
     const rankInfo = (await ctx.database.get('bull_card_rank', { guildId, userId: winner.userId }))[0];
     if (rankInfo) {
       await ctx.database.set('bull_card_rank', { guildId, userId: winner.userId }, { score: rankInfo.score + winningPoints });
-      loserNames.push(winner.userId);
     }
   }
 
@@ -606,7 +605,6 @@ async function endGame(ctx: Context, session: Session<never, never>, guildId: st
 
   await ctx.database.set('bull_card_games', { guildId }, { isStarted: false, members: [] });
 }
-
 
 function getWinners(playerInfos: BullCardPlayers[]): BullCardPlayers[] {
   let winners = [];
