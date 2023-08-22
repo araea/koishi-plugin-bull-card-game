@@ -613,7 +613,7 @@ async function endGame(ctx: Context, session: Session<never, never>, guildId: st
 
 function getWinners(playerInfos: BullCardPlayers[]): BullCardPlayers[] {
   let winners = [];
-  let maxScore = 0;
+  let maxScore = -1;
   const suitWeight = {
     "♠": 4,
     "♥": 3,
