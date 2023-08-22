@@ -234,7 +234,7 @@ export function apply(ctx: Context) {
         return msg.gameStartSuccess
       }
 
-      let deck = createAndShuffleDeck() // 调用函数创建并洗牌一副扑克牌
+      let deck = createAndShuffleDeck(3) // 调用函数创建并洗牌一副扑克牌
 
       await ctx.database.set('bull_card_games', { guildId }, { deck })
 
@@ -243,7 +243,7 @@ export function apply(ctx: Context) {
       // 遍历 members 数组中的每一位成员，每个人分别发 3 张牌（发牌时若牌堆已经空了则新建一个牌堆）
       for (const userId of members) {
         if (deck.length < 3) { // 如果牌堆剩余的牌不足三张，则重新创建并洗牌一副扑克牌
-          deck = createAndShuffleDeck()
+          deck = createAndShuffleDeck(3)
           await ctx.database.set('bull_card_games', { guildId }, { deck })
         }
         let hand = deck.slice(-3) // 从牌堆中取出最后三张牌作为手牌
@@ -289,7 +289,7 @@ ${filteredPlayerInfos.map(playerInfo => `玩家【${h.at(playerInfo.userId)}】�
       // 如果牌堆为空，重新洗牌
       let deck = gameInfo.deck
       if (deck.length < 1) {
-        deck = createAndShuffleDeck()
+        deck = createAndShuffleDeck(3)
         await ctx.database.set('bull_card_games', { guildId }, { deck })
       }
 
@@ -399,7 +399,7 @@ async function getPlayerInfo(ctx: Context, guildId: string, userId: string) {
 }
 
 // 创建并洗牌一副扑克牌的函数
-function createAndShuffleDeck(): Card[] {
+function createAndShuffleDeck(numShuffles: number): Card[] {
   let deck: Card[] = []
   // 初始化
   for (let suit of Object.values(Suit)) { // 遍历Suit枚举的所有值
@@ -416,7 +416,11 @@ function createAndShuffleDeck(): Card[] {
         ;[array[i], array[j]] = [array[j], array[i]]
     }
   }
-  shuffle(deck) // 打乱牌堆
+
+  for (let i = 0; i < numShuffles; i++) {
+    shuffle(deck) // 进行多次洗牌操作
+  }
+
   return deck
 }
 
