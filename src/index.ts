@@ -644,7 +644,7 @@ function getWinners(playerInfos: BullCardPlayers[]): BullCardPlayers[] {
       maxScore = score;
       winners = [player];
     } else if (score === maxScore) {
-      const { suit: winnerSuit, rank: winnerRank } = winners[0]?.maxCard || {};
+      const { suit: winnerSuit = '', rank: winnerRank = '' } = winners.length > 0 ? winners[0].maxCard : {};
 
       if (rankWeight[playerRank] > rankWeight[winnerRank]) {
         winners = [player];
