@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-bull-card-game",
   "description": "斗牛纸牌游戏插件，让你和你的群友可以在群里一起玩斗牛，体验牛气冲天的乐趣！ 🐂",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
